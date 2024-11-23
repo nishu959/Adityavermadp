@@ -1,50 +1,37 @@
-a = input()
-b = input()
+class Solution:
+    def isScramble(self, s1: str, s2: str) -> bool:
+        dp = {}
+        def solve(a,b):
+            if a==b:
+                return True
+            if len(a)<=1 or len(b)<=1:
+                return False
+            
+            key = a + " " + b
+            if key in dp:
+                return dp[key]
+            n = len(a)
+            flag = False
+            for i in range(1, n):
+                cond1 = solve(a[:i], b[n-i:]) and solve(a[i:], b[:n-i])
+                cond2 = solve(a[:i], b[:i]) and solve(a[i:], b[i:])
+                if cond1 or cond2:
+                    flag = True
+                    break
+            dp[key]=flag
+            return flag
+            
 
-dp = {}
 
-def solve(a, b):
- 
-  if(a==b):
-    return True
-   
-  if(len(a)<=1):
-    return False
-   
-  flag = False
-  
-  temp = a + b
-  
-  
-  if temp in dp:
-    return dp[temp]
-  
-  
-  n = len(a)
-  
-  for i in range(1,n):
-   
-    cond1 = solve(a[:i], b[i+1:]) and solve(a[i:], b[:i+1])
-   
-    cond2 = solve(a[:i], b[:i]) and solve(a[i+1:], b[i+1:])
-   
-    if(cond1 or cond2):
-      flag =  True
-      break
-      
-  dp[temp] = flag
-    
-  return flag
-  
-  
 
-if(len(a)!=len(b)):
-  print("False")
-  
-elif(a==""):
-  print("True")
-else:
-  
-  print(solve(a, b))
- 
 
+
+
+        if (len(s1)!=len(s2)):
+            return False;
+        if len(s1)==0:
+            return True
+        ans = solve(s1,s2)
+        return ans
+
+        
